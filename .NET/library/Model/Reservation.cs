@@ -8,5 +8,6 @@
         public DateTime ReservationDate { get; set; }
         public int WaitListPosition { get; set; }
         public bool IsActive { get; set; }
+        public DateTime? NotificationSent { get; set; } = null;
     }
 }

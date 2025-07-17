@@ -8,5 +8,6 @@ namespace OneBeyondApi.DataAccess
         public Guid CreateReservation(Reservation reservation);
         bool CancelReservation(Guid reservationId);
         IList<Reservation> GetReservationsByBook(Guid bookId);
+        Reservation GetNextReservation(Guid bookId);
     }
 }

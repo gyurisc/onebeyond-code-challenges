@@ -63,6 +63,19 @@ namespace OneBeyondApi.DataAccess
             }
         }
 
+        public Reservation GetNextReservation(Guid bookId)
+        {
+            using (var context = new LibraryContext())
+            { 
+                var reservation = context.Reservations
+                    .Where(r => r.BookId == bookId && r.IsActive)
+                    .OrderBy(r => r.ReservationDate)
+                    .FirstOrDefault();
+
+                return reservation;
+            }
+        }
+
         public IList<Reservation> GetReservationsByBook(Guid bookId)
         {
             using (var context = new LibraryContext()) 

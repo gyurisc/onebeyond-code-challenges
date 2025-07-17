@@ -5,10 +5,12 @@ namespace OneBeyondApi.DataAccess
     public class OnLoanRepository : IOnLoanRepository
     {
         private readonly IFineRepository _fineRepository;
+        private readonly IReservationRepository _reservationRepository;
 
-        public OnLoanRepository(IFineRepository fineRepository) 
+        public OnLoanRepository(IFineRepository fineRepository, IReservationRepository reservationRepository) 
         {
             _fineRepository = fineRepository;
+            _reservationRepository = reservationRepository;
         }
 
         public IList<ActiveLoanDto> GetActiveLoans()
@@ -73,6 +75,20 @@ namespace OneBeyondApi.DataAccess
                 }
 
                 // TODO: if we have reservation then process it 
+                var nextReservation = _reservationRepository.GetNextReservation(bookStock.Book.Id);
+                if (nextReservation != null)
+                {
+                    // Send notification that the book is available
+                    using (var reservationContext = new LibraryContext())
+                    {
+                        var reservation = reservationContext.Reservations.Find(nextReservation);
+                        if (reservation != null)
+                        {
+                            reservation.NotificationSent = DateTime.Now;
+                            reservationContext.SaveChanges();
+                        }
+                    }
+                }
 
                 // update the book stock record so it is not loaned anymore 
                 bookStock.OnLoanTo = null;
