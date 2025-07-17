@@ -29,6 +29,16 @@ namespace OneBeyondApi.Controllers
         [Route("ReturnBook")]
         public bool ReturnBook(ReturnBookDto returnBook)
         {
+            if (returnBook == null)
+            { 
+                return false;
+            }
+
+            if (returnBook.BookStockId == Guid.Empty)
+            { 
+                return false;
+            }
+
             return _onLoanRepository.ReturnBook(returnBook.BookStockId);
         }
     }
