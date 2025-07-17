@@ -38,6 +38,7 @@ namespace OneBeyondApi
 
             var rustBook = new Book
             {
+                Id = Guid.NewGuid(),
                 Name = "Rust Development Cookbook",
                 Format = BookFormat.Paperback,
                 Author = margaretJones,
@@ -52,6 +53,7 @@ namespace OneBeyondApi
 
             var lianaJames = new Borrower
             {
+                Id = Guid.NewGuid(),
                 Name = "Liana James",
                 EmailAddress = "liana@gmail.com"
             };
@@ -83,12 +85,42 @@ namespace OneBeyondApi
                 LoanEndDate = null
             };
 
+            var bookOnLoanExpired = new BookStock
+            {
+                Id = Guid.NewGuid(),
+                Book = clayBook,
+                OnLoanTo = lianaJames,
+                LoanEndDate = DateTime.Now.Date.AddDays(-4)
+            };
+
+            var reservationOfRustBook = new Reservation
+            {
+                Id = Guid.NewGuid(),
+                BorrowerId = lianaJames.Id,
+                BookId = rustBook.Id,
+                IsActive = true,
+                WaitListPosition = 1,
+                ReservationDate = DateTime.Now.AddDays(-5),
+            };
+
+            var smallFine = new Fine
+            {
+                Id = Guid.NewGuid(),
+                BorrowerId = lianaJames.Id,
+                BookStockId = bookOnLoanExpired.Id,
+                LoanEndDate = DateTime.Now.AddDays(-6),
+                ReturnDate = DateTime.Now.AddDays(-3),
+                OverDueInDays = 3, 
+                AmountToPay = 2.5m,
+                IsPaid = false,
+                CreatedDate = DateTime.Now.AddDays(-3),
+            };
+
             using (var context = new LibraryContext())
             {
                 context.Authors.Add(ernestMonkjack);
                 context.Authors.Add(sarahKennedy);
                 context.Authors.Add(margaretJones);
-
 
                 context.Books.Add(clayBook);
                 context.Books.Add(agileBook);
@@ -101,6 +133,9 @@ namespace OneBeyondApi
                 context.Catalogue.Add(bookNotOnLoan);
                 context.Catalogue.Add(bookOnLoanUntilNextWeek);
                 context.Catalogue.Add(rustBookStock);
+                context.Catalogue.Add(bookOnLoanExpired);
+                context.Reservations.Add(reservationOfRustBook);
+                context.Fines.Add(smallFine);
 
                 context.SaveChanges();
 
