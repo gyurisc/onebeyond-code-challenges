@@ -5,7 +5,7 @@
         public Guid Id { get; set; }
         public Guid BorrowerId { get; set; }
         public Guid BookId { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime ReservationDate { get; set; }
         public int WaitListPosition { get; set; }
         public bool IsActive { get; set; }
     }

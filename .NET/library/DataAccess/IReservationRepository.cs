@@ -6,5 +6,7 @@ namespace OneBeyondApi.DataAccess
     {
         public List<ReservationDto> GetReservationsByBorrower(Guid borrowerId);
         public Guid CreateReservation(Reservation reservation);
+        bool CancelReservation(Guid reservationId);
+        IList<Reservation> GetReservationsByBook(Guid bookId);
     }
 }
