@@ -14,6 +14,19 @@ namespace OneBeyondApi.DataAccess
             }
         }
 
+        public IList<Fine> GetFinesByBorrower(Guid borrowerId)
+        {
+            using (var context = new LibraryContext())
+            {
+                var finesByBorrower = context.Fines
+                    .Where(f => f.BorrowerId == borrowerId)
+                    .OrderByDescending(f => f.CreatedDate)
+                    .ToList();
+
+                return finesByBorrower;
+            }
+        }
+
         public bool PayFine(Guid fineId)
         {
             using (var context = new LibraryContext())
