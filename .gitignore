@@ -1,3 +1,5 @@
 /PHP/library-api-php/.vscode
 /bin/
 /obj/
+.NET/OneBeyondApi.Tests/bin/*
+.NET/OneBeyondApi.Tests/obj/*
